@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Clínica Doutor X2 - Cadastro de Pacientes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    form {
+      max-width: 800px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    .print-section {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Clínica Doutor X2</h1>
+  <form id="pacienteForm">
+    <label>Nome: <input type="text" name="nome" required></label>
+    <label>Data de Nascimento: <input type="date" name="nascimento"></label>
+    <label>Idade: <input type="number" name="idade"></label>
+    <label>Telefone: <input type="text" name="telefone"></label>
+    <label>Filiação: <input type="text" name="filiacao"></label>
+    <label>Estado Civil: <input type="text" name="estadocivil"></label>
+    <label>Naturalidade: <input type="text" name="naturalidade"></label>
+    <label>CPF: <input type="text" name="cpf"></label>
+    <label>RG: <input type="text" name="rg"></label>
+    <label>Profissão: <input type="text" name="profissao"></label>
+    <label>Endereço: <input type="text" name="endereco"></label>
+    <label>Município: <input type="text" name="municipio"></label>
+    <label>Procedimento: <input type="text" name="procedimento"></label>
+    <label>Dr(a): <input type="text" name="medico"></label>
+    <label>Data: <input type="date" name="data"></label>
+    <label>Observações: <textarea name="obs"></textarea></label>
+
+    <button type="button" onclick="imprimirFicha()">Imprimir Ficha</button>
+  </form>
+
+  <div id="printArea" class="print-section"></div>
+
+  <script>
+    function imprimirFicha() {
+      const form = document.forms["pacienteForm"];
+      const dados = Array.from(form.elements)
+        .filter(el => el.name)
+        .map(el => `<p><strong>${el.previousSibling.textContent.trim()}</strong> ${el.value}</p>`)
+        .join("");
+
+      const ficha = `
+        <h2>Ficha do Paciente - Clínica Doutor X2</h2>
+        ${dados}
+      `;
+
+      const printWindow = window.open('', '', 'width=800,height=600');
+      printWindow.document.write(`
+        <html><head><title>Ficha do Paciente</title></head><body>${ficha}</body></html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  </script>
+</body>
+</html>
